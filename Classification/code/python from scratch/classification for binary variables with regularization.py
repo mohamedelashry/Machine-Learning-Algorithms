@@ -135,8 +135,9 @@ print('regularized cost = ' , rcost)
 
 result = opt.fmin_tnc(func=costReg, x0=theta2, fprime=gradientReg,
                       args=(X2, y2, learningRate))
-print( 'result = ' , result )
 
+print( 'result = ' , result )
+    
 
 def predict(theta, X):
     probability = sigmoid(X * theta.T)

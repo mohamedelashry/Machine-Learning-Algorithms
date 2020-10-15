@@ -63,7 +63,7 @@ theta = np.zeros(3)
 # print('y.shape = ' , y.shape)
 
 thiscost = cost(theta, X, y)
-print()
+print("@#@##@#@#@#@#@#@#@")
 print('cost = ' , thiscost)
 
 #ddfine the gradiant 
@@ -81,7 +81,8 @@ def gradient(theta, X, y):
     for i in range(parameters):
         term = np.multiply(error, X[:,i])
         grad[i] = np.sum(term) / len(X)
-    
+    print(":::::::::::::::::::::::::::")
+    print(grad)
     return grad
 
 #repeat to get minimum cost 
@@ -89,8 +90,8 @@ import scipy.optimize as opt
 result = opt.fmin_tnc(func=cost,
                       x0=theta,
                       fprime=gradient,args=(X, y))
-
-
+print("%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+print(result)
 #show for best cost with suitable theta
 costafteroptimize = cost(result[0], X, y)
 print('cost after optimize = ' , costafteroptimize)
@@ -98,6 +99,7 @@ print('cost after optimize = ' , costafteroptimize)
 
 def predict(theta, X):
     probability = sigmoid(X * theta.T)
+    print(probability.shape)
     return [1 if x >= 0.5 else 0 for x in probability]
 
 theta_min = np.matrix(result[0])
