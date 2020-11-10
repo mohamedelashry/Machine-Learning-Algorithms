@@ -78,7 +78,7 @@ def accuracy(y, yhat):
 
 if __name__ == '__main__':
 
-    X,Y = get_data("C:\\Users\\decim\\Desktop\\review with practice on machine learning algorithms\\Classification\\code\\Assingment\\diabetes")
+    X,Y = get_data("diabetes")
     X = X.toarray()
     Y = np.where(Y == -1, 0, 1)
 

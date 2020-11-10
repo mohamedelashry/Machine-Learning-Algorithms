@@ -25,6 +25,7 @@ def standardize_para(X):
 def standardize_X(X, stand_parms):
     return (X - stand_parms['X_mean']) / stand_parms['X_std']
 
+# 1/ 1 + e^-score
 def sigmoid(scores):
     return 1 / (1 + np.exp(-scores))
 
@@ -64,6 +65,8 @@ def accuracy(x , y , w):
     accuracy = np.sum(y == yhat) / len(y)
     return accuracy
 
+# $1 x1 + $2 x2 = 10
+
 
 #Building the Logistic Regression Function
 def trainLR(features, target, num_steps, learning_rate, add_intercept = False):
@@ -75,6 +78,7 @@ def trainLR(features, target, num_steps, learning_rate, add_intercept = False):
         
     weights = np.zeros(features.shape[1])
     
+     # (768 , 8 ) (8 ,1 )
     for step in range(num_steps):
         scores = np.dot(features, weights)
         predictions = sigmoid(scores)
@@ -99,18 +103,20 @@ def trainLR(features, target, num_steps, learning_rate, add_intercept = False):
 
 if __name__ == '__main__':
 
-    X,Y = get_data("C:\\Users\\decim\\Desktop\\review with practice on machine learning algorithms\\Classification\\code\\Assingment\\diabetes")
+    X,Y = get_data("diabetes")
 
+    
     X = X.toarray()
     Y = np.where(Y == -1, 0, 1)
     
     # print(type(X))
     # print(Y)
     
-    # print(X.shape)
+    print(X.shape)
 
     tr_idx, te_idx = split_data(X.shape[0],train_size = 0.8)
-    
+      
+     
     Xtr = X[tr_idx,:]
     Ytr = Y[tr_idx];
     Xte = X[te_idx,:]
@@ -145,16 +151,16 @@ if __name__ == '__main__':
     Xte = np.hstack((Xte,np.ones((Xte.shape[0],1))))
     Xte = np.insert(Xte, 0, 1, axis=1)
 
-
+    
     
     #to run the model.
     weights , ave = trainLR(Xtr, Ytr,
                          num_steps = 1000, 
-                         learning_rate = 0.001,
+                         learning_rate = 0.0001,
                          add_intercept=False)
     
     #Comparing with Sk-Learn’s LogisticRegression   
-    clf = LogisticRegression(fit_intercept=False, C = 0.001)
+    clf = LogisticRegression(fit_intercept=False, C = 0.0001)
     clf.fit(Xtr, Ytr)
     
     print("final sk_learn weights : " , clf.coef_)
@@ -168,7 +174,7 @@ if __name__ == '__main__':
     print('Accuracy from sk-learn:   ', clf.score(Xte, Yte))
     print('Accuracy from scratch:  ',acc)
     
-    epoc = [1,2,3,4,5,6,7,8,9,10]
+    epoc = [100,200,300,400,500,600,700,800,900,1000]
     plt.scatter( epoc,ave, color = "g")
     plt.xlabel("# epoch")
     plt.ylabel("accurecy")

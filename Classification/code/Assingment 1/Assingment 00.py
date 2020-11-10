@@ -211,7 +211,7 @@ if __name__ == '__main__':
     Declare_Winner(TR_theta)
     
     # the accuracy as a function of epochs Plot
-    epoc = [1,2,3,4,5,6,7,8,9,10]
+    epoc = [100,200,300,400,500,600,700,800,900,1000]
     plt.scatter( epoc,acclist, color = "r")
     plt.xlabel("# epoch")
     plt.ylabel("accurecy")
