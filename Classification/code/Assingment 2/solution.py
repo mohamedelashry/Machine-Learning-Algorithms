@@ -21,7 +21,7 @@ def accuracy(y_true, y_pred):
     accuracy = np.sum(y_true == y_pred) / y_true.shape[0]
     return accuracy*100
 
-def pegasos(x, y, weights, lam, iterations):
+def sgd_pegasos_svm(x, y, weights, lam, iterations):
     if type(weights) == type(None): weights = np.zeros(x[0].shape)
     num_S = len(y)
     for i in range(iterations):
@@ -43,7 +43,7 @@ def train_seqSVM(x, y, lam, max_iter):
         theta = np.zeros(d)
         y_i = np.array([1 if label == j else 0 for label in y])
         y_i = np.reshape(y_i, (n, 1))        
-        theta = pegasos(x, y_i,theta,lam, max_iter)
+        theta = sgd_pegasos_svm(x, y_i,theta,lam, max_iter)
         w[j-1,:] = theta   
     ########
     return w
@@ -66,7 +66,6 @@ def train_batchSVM(x, y, lam, max_iter,batch_size):
     uniqlbl = np.unique(y)
     w = np.zeros((len(uniqlbl),d))
     indx = np.arange(n)
-
     ######
     for j in range(1, len(uniqlbl) + 1):
         theta = np.zeros(d)
@@ -164,7 +163,6 @@ Xte = Xte.toarray()
 #Yte = Yte[:,np.newaxis]
 
 
-print(np.unique(Yte))
 
 Ytr = Ytr.reshape((-1))
 Yte = Yte.reshape((-1))
@@ -182,10 +180,8 @@ max_iter = 500
 # Model selection
 ###
 seq_lam = seq_model_select(Xtr, Ytr,grid_,n_fold,max_iter)
-print(seq_lam)
 # Train best model on training set
 W = train_seqSVM(Xtr, Ytr,seq_lam,max_iter)
-print(W)
 # # Test the model on test set 
 scores = test_algorithm(Xte,Yte,W)
 print("SeqSVM accuracy on test set:", f'{accuracy(Yte, scores):2.2f}')
@@ -200,8 +196,7 @@ grid_ = [1e-5,1e-1,1,5,10,100]
 batch_lam = batch_model_select(Xtr, Ytr,grid_,n_fold,max_iter,batch_size)
 # Train best model on training set
 W = train_batchSVM(Xtr, Ytr,100,max_iter,batch_size)
-print(W)
-# # Test the model on test set 
+# Test the model on test set 
 scores = test_algorithm(Xte,Yte,W)
 print("Mini-batch SVM accuracy on test set:", f'{accuracy(Yte, scores):2.2f}')
 
